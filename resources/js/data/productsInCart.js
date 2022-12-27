@@ -6,4 +6,12 @@ function setProductsInCart(products) {
     productsInCart = products;
 }
 
-export { productsInCart, setProductsInCart };
+function setProductsInCartQuantity(productId, quantity) {
+    productsInCart.forEach(product => {
+        if (product.id === productId) {
+            product.quantity = quantity;
+        }
+    });
+}
+
+export { productsInCart, setProductsInCart, setProductsInCartQuantity };

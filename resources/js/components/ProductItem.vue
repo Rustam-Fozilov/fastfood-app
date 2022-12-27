@@ -11,7 +11,7 @@
                 </div>
             </span>
         </router-link>
-        <button @click="addToCart">SAVATGA</button>
+        <button class="btn" @click="addToCart">SAVATGA</button>
     </div>
 </template>
 
@@ -69,23 +69,5 @@ export default {
         font-size: 16px;
         text-align: center;
         margin-top: 5px;
-    }
-
-    button {
-        width: 150px;
-        height: 50px;
-        border: none;
-        border-radius: 7px;
-        background-color: #000;
-        color: #fff;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    button:hover {
-        border: 1px solid black;
-        background-color: transparent;
-        color: black;
     }
 </style>

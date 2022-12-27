@@ -14,7 +14,9 @@ export default {
     components: {
         ProductItem
     },
+
     emits: ['add-to-cart'],
+
     data() {
         return {
             products: [],

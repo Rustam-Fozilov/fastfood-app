@@ -2,15 +2,15 @@
     <nav>
         <div class="nav-wrapper">
             <div class="brand">
-                <a href="/" class="brand-logo">
+                <router-link to="/" class="brand-logo">
                     <span>
                         <img src="assets/navbar/logo.png" alt="LOGO">
                     </span>
-                </a>
+                </router-link>
             </div>
             <div class="nav-search">
                 <form action="/search" method="GET">
-                    <input type="text" name="query" placeholder="Qidiring" autocomplete="off">
+                    <input type="text" name="query" placeholder="Search" autocomplete="off">
                     <button type="submit">
                         <span>
                             <img src="assets/navbar/search.svg" alt="search">
@@ -46,9 +46,8 @@ export default {
     props: {
       cartLength: {
           type: Number,
-          required: true
       }
-    }
+    },
 }
 </script>
 
