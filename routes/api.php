@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Category;
+use App\Http\Controllers\API\LoginController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/products', function () {
     return response()->json(Product::all());
 });
+
+Route::get('/isLogged', [LoginController::class, 'index']);

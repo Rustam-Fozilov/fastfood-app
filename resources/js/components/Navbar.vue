@@ -9,8 +9,8 @@
                 </router-link>
             </div>
             <div class="nav-search">
-                <form action="/search" method="GET">
-                    <input type="text" name="query" placeholder="Search" autocomplete="off">
+                <form method="GET" @submit.prevent="search">
+                    <input type="text" name="query" placeholder="Search" autocomplete="off" v-model="query">
                     <button type="submit">
                         <span>
                             <img src="assets/navbar/search.svg" alt="search">
@@ -20,12 +20,12 @@
             </div>
             <div class="right_nav">
                 <div class="user">
-                    <a href="#">
+                    <router-link :to="isLogged ? '/login' : '/profile'">
                         <span>
                             <img src="assets/navbar/user.svg" alt="user img">
                         </span>
-                        Login
-                    </a>
+                        {{ this.isLogged ? 'Login' : 'Rustam' }}
+                    </router-link>
                 </div>
                 <div class="cart">
                     <router-link to="/cart">
@@ -41,13 +41,39 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "Navbar",
     props: {
-      cartLength: {
-          type: Number,
-      }
+        cartLength: {
+            type: Number,
+        }
     },
+
+    created() {
+        axios
+            .get('/api/isLogged')
+            .then(response => {
+                this.isLogged = response.data;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    },
+
+    data() {
+        return {
+            isLogged: false,
+            query: null,
+        }
+    },
+
+    methods: {
+        search() {
+            this.$router.push({path: '/search', query: {query: this.query}});
+        }
+    }
 }
 </script>
 

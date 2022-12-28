@@ -12,6 +12,7 @@
 import Navbar from '../components/Navbar.vue'
 import ProductsList from "../components/ProductList.vue";
 import {productsInCart, setProductsInCart} from "../data/productsInCart.js";
+import axios from "axios";
 
 export default {
     name: 'App',
@@ -23,7 +24,8 @@ export default {
 
     data() {
         return {
-            lengthOfCart: 0,
+            lengthOfCart: productsInCart.length,
+            isLogged: false,
         }
     },
 
