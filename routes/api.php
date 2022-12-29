@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\LoginController;
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\SearchController;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/products', function () {
-    return response()->json(Product::all());
-});
-
-Route::get('/isLogged', [LoginController::class, 'index']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('/search', [SearchController::class, 'index']);
 

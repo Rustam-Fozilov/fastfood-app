@@ -32,12 +32,12 @@ export default {
 
     methods: {
         addToCart(product) {
-            if(!productsInCart.find(p => p.id === product.id)) {
+            if (!productsInCart.find(p => p.id === product.id)) {
                 productsInCart.push(product);
                 productsInCart.find(p => p.id === product.id).quantity = 1;
             } else {
                 setProductsInCart(productsInCart.map(p => {
-                    if(p.id === product.id) {
+                    if (p.id === product.id) {
                         p.quantity++;
                     }
                     return p;
@@ -50,10 +50,10 @@ export default {
 </script>
 
 <style scoped>
-    .result {
-        margin-top: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
+.result {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 </style>

@@ -32,7 +32,7 @@ a {
 .btn {
     padding: 15px 35px;
     border: none;
-    border-radius: 7px;
+    border-radius: 5px;
     background-color: #000;
     color: #fff;
     font-size: 18px;
@@ -41,9 +41,7 @@ a {
 }
 
 .btn:hover {
-    border: 1px solid black;
-    background-color: transparent;
-    color: black;
+    opacity: 0.7;
 }
 
 .container {

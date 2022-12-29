@@ -24,7 +24,7 @@
             </div>
         </div>
         <p>Jami: {{totalPrice}} so'm</p>
-        <button class="btn" @click="confirm">TASDIQLASH</button>
+        <button class="btn" @click="confirm">BUYURTMA QILISH</button>
     </div>
 </template>
 
@@ -37,12 +37,8 @@ export default {
     components: {Navbar},
     data() {
         return {
-            products: [],
+            products: productsInCart,
         }
-    },
-
-    created() {
-        this.products = productsInCart;
     },
 
     methods: {
@@ -64,7 +60,7 @@ export default {
         },
 
         confirm() {
-            this.$router.push('/');
+            this.$router.push('/login');
         }
     },
 

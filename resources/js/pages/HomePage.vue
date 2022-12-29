@@ -24,7 +24,6 @@ export default {
     data() {
         return {
             lengthOfCart: productsInCart.length,
-            isLogged: false,
         }
     },
 

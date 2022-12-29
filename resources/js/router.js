@@ -23,6 +23,7 @@ const routes = [
         path: "/product/:id",
         name: "Product",
         component: ProductPage,
+        props: true,
     },
     {
         path: "/login",

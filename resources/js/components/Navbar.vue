@@ -20,11 +20,11 @@
             </div>
             <div class="right_nav">
                 <div class="user">
-                    <router-link :to="isLogged ? '/login' : '/profile'">
+                    <router-link to="/login">
                         <span>
                             <img src="http://127.0.0.1:8000/assets/navbar/user.svg" alt="user img">
                         </span>
-                        {{ this.isLogged ? 'Login' : 'Rustam' }}
+                        Login
                     </router-link>
                 </div>
                 <div class="cart">
@@ -51,20 +51,8 @@ export default {
         }
     },
 
-    created() {
-        axios
-            .get('/api/isLogged')
-            .then(response => {
-                this.isLogged = response.data;
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    },
-
     data() {
         return {
-            isLogged: false,
             query: null,
             searchData: null,
         }
@@ -92,97 +80,97 @@ export default {
 </script>
 
 <style scoped>
-    nav {
-        height: 100px;
-    }
+nav {
+    height: 100px;
+}
 
-    .nav-wrapper {
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.nav-wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .brand-logo img {
-        width: 120px;
-    }
+.brand-logo img {
+    width: 120px;
+}
 
-    .nav-search {
-        border: 1px solid #ccc;
-        height: 40px;
-        border-radius: 5px;
-    }
+.nav-search {
+    border: 1px solid #ccc;
+    height: 40px;
+    border-radius: 5px;
+}
 
-    .nav-search form {
-        display: flex;
-        align-items: center;
-        height: 100%;
-    }
+.nav-search form {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
 
-    .nav-search input {
-        width: 400px;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        padding: 0 10px;
-    }
+.nav-search input {
+    width: 400px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 0 10px;
+}
 
-    .nav-search button {
-        width: 100px;
-        height: 100%;
-        border: none;
-        outline: none;
-        background-color: #f8f8f8;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+.nav-search button {
+    width: 100px;
+    height: 100%;
+    border: none;
+    outline: none;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-    .right_nav {
-        display: flex;
-    }
+.right_nav {
+    display: flex;
+}
 
-    .user {
-        margin-right: 25px;
-        padding: 10px;
-    }
+.user {
+    margin-right: 25px;
+    padding: 10px;
+}
 
-    .user img {
-        width: 20px;
-    }
+.user img {
+    width: 20px;
+}
 
-    .user a {
-        display: flex;
-        align-items: center;
-    }
+.user a {
+    display: flex;
+    align-items: center;
+}
 
-    .user a span {
-        margin-right: 10px;
-    }
+.user a span {
+    margin-right: 10px;
+}
 
-    .cart img {
-        width: 20px;
-    }
+.cart img {
+    width: 20px;
+}
 
-    .cart {
-        padding: 10px;
-    }
+.cart {
+    padding: 10px;
+}
 
-    .cart a {
-        display: flex;
-        align-items: center;
-    }
+.cart a {
+    display: flex;
+    align-items: center;
+}
 
-    .cart a span {
-        margin-right: 10px;
-    }
+.cart a span {
+    margin-right: 10px;
+}
 
-    .user:hover {
-        background-color: #f1f1f2;
-        border-radius: 5px;
-    }
+.user:hover {
+    background-color: #f1f1f2;
+    border-radius: 5px;
+}
 
-    .cart:hover {
-        background-color: #f1f1f2;
-        border-radius: 5px;
-    }
+.cart:hover {
+    background-color: #f1f1f2;
+    border-radius: 5px;
+}
 </style>

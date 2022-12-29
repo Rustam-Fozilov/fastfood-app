@@ -1,6 +1,6 @@
 <template>
     <div class="product_item">
-        <router-link to="/cart">
+        <router-link :to="'/product/' + product.id">
             <span>
                 <div class="product_image">
                     <img src="http://127.0.0.1:8000/assets/products/burger.png" alt="product_image">
