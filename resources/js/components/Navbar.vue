@@ -4,7 +4,7 @@
             <div class="brand">
                 <router-link to="/" class="brand-logo">
                     <span>
-                        <img src="assets/navbar/logo.png" alt="LOGO">
+                        <img src="http://127.0.0.1:8000/assets/navbar/logo.png" alt="LOGO">
                     </span>
                 </router-link>
             </div>
@@ -13,7 +13,7 @@
                     <input type="text" name="query" placeholder="Search" autocomplete="off" v-model="query">
                     <button type="submit">
                         <span>
-                            <img src="assets/navbar/search.svg" alt="search">
+                            <img src="http://127.0.0.1:8000/assets/navbar/search.svg" alt="search">
                         </span>
                     </button>
                 </form>
@@ -22,7 +22,7 @@
                 <div class="user">
                     <router-link :to="isLogged ? '/login' : '/profile'">
                         <span>
-                            <img src="assets/navbar/user.svg" alt="user img">
+                            <img src="http://127.0.0.1:8000/assets/navbar/user.svg" alt="user img">
                         </span>
                         {{ this.isLogged ? 'Login' : 'Rustam' }}
                     </router-link>
@@ -30,7 +30,7 @@
                 <div class="cart">
                     <router-link to="/cart">
                         <span>
-                            <img src="assets/navbar/cart.svg" alt="cart img">
+                            <img src="http://127.0.0.1:8000/assets/navbar/cart.svg" alt="cart img">
                         </span>
                         Cart {{ cartLength }}
                     </router-link>
@@ -66,13 +66,27 @@ export default {
         return {
             isLogged: false,
             query: null,
+            searchData: null,
         }
     },
 
     methods: {
         search() {
-            this.$router.push({path: '/search', query: {query: this.query}});
-        }
+            axios
+                .post('/api/search', {query: this.query})
+                .then(response => {
+                    this.searchData = response.data;
+                    this.$router.push({
+                        name: 'Search',
+                        params: {
+                            data: JSON.stringify(this.searchData),
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
     }
 }
 </script>

@@ -31,6 +31,7 @@
 <script>
 import {productsInCart, setProductsInCart, setProductsInCartQuantity} from "../data/productsInCart.js";
 import Navbar from "../components/Navbar.vue";
+
 export default {
     name: "CartPage",
     components: {Navbar},

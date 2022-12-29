@@ -40,9 +40,10 @@ const routes = [
         component: ProfilePage,
     },
     {
-        path: "/search",
+        path: "/search/:data",
         name: "Search",
-        component: SearchPage
+        component: SearchPage,
+        props: true,
     }
 ];
 

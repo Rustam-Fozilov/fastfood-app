@@ -5,21 +5,20 @@
             <img src="assets/home/banner.png" alt="banner">
         </div>
 
-        <ProductsList @add-to-cart="addToCart"/>
+        <ProductList @add-to-cart="addToCart"/>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import ProductsList from "../components/ProductList.vue";
+import ProductList from "../components/ProductList.vue";
 import {productsInCart, setProductsInCart} from "../data/productsInCart.js";
-import axios from "axios";
 
 export default {
     name: 'App',
     emits: ['add-to-cart'],
     components: {
         Navbar,
-        ProductsList,
+        ProductList,
     },
 
     data() {

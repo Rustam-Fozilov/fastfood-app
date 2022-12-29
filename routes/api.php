@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\LoginController;
+use App\Http\Controllers\API\SearchController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,5 @@ Route::get('/products', function () {
 });
 
 Route::get('/isLogged', [LoginController::class, 'index']);
+Route::post('/search', [SearchController::class, 'index']);
+
