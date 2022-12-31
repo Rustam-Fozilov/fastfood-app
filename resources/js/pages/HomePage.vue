@@ -12,7 +12,6 @@
 import Navbar from '../components/Navbar.vue'
 import ProductList from "../components/ProductList.vue";
 import {productsInCart, setProductsInCart} from "../data/productsInCart.js";
-import {user} from "../data/user.js";
 
 export default {
     name: 'App',
@@ -30,8 +29,8 @@ export default {
 
     computed: {
         getUsername() {
-            if(user.name) {
-                return user.name;
+            if(localStorage.getItem('loggedUser')) {
+                return JSON.parse(localStorage.getItem('loggedUser')).name;
             }
         }
     },

@@ -20,7 +20,7 @@
             </div>
             <div class="right_nav">
                 <div class="user">
-                    <router-link to="/login">
+                    <router-link :to="this.username ? '/profile' : '/login'">
                         <span>
                             <img src="http://127.0.0.1:8000/assets/navbar/user.svg" alt="user img">
                         </span>
@@ -41,8 +41,6 @@
 </template>
 
 <script>
-// import axios from "axios";
-
 import axios from "axios";
 
 export default {

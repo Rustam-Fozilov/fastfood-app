@@ -22,7 +22,6 @@
 
 <script>
 import axios from "axios";
-import {user, setUser} from "../data/user";
 
 export default {
     name: "LoginPage",
@@ -41,6 +40,8 @@ export default {
                 .then(response => {
                     if (response.data.status === 'success') {
                         setUser(response.data.user);
+                        localStorage.setItem('loggedUser', JSON.stringify(response.data.user));
+                        console.log(localStorage.getItem('loggedUser'));
                         this.$router.push({
                             name: 'Home',
                         })
@@ -48,7 +49,7 @@ export default {
                         this.error = response.data.message;
                     }
                 })
-        }
+        },
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <Navbar :cart-length="lengthOfCart"/>
+    <Navbar :cart-length="lengthOfCart" :username="getUsername"/>
     <div class="product-container">
         <div class="product-container__image">
             <img src="http://127.0.0.1:8000/assets/products/burger.png" alt="product image">
@@ -53,6 +53,14 @@ export default {
                 }));
             }
             this.lengthOfCart = productsInCart.length;
+        }
+    },
+
+    computed: {
+        getUsername() {
+            if(localStorage.getItem('loggedUser')) {
+                return JSON.parse(localStorage.getItem('loggedUser')).name;
+            }
         }
     }
 }

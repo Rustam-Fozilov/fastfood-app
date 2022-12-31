@@ -14,12 +14,6 @@ const routes = [
         component: HomePage,
         props: true
     },
-    // {
-    //     path: "/:user",
-    //     name: "HomeUser",
-    //     component: HomePage,
-    //     props: true
-    // },
     {
         path: "/cart",
         name: "Cart",
