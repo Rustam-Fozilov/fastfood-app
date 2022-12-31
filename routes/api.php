@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\LoginController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\SearchController;
 use Illuminate\Http\Request;
@@ -25,3 +25,5 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('/search', [SearchController::class, 'index']);
 
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);

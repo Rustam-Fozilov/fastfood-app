@@ -1,5 +1,5 @@
 <template>
-    <Navbar :cart-length="products.length"/>
+    <Navbar :cart-length="products.length" :username="getUsername"/>
     <h1 style="text-align: center">Buyurmalaringiz {{products.length}}</h1>
     <div class="cart">
         <div class="cart-container">
@@ -30,6 +30,7 @@
 
 <script>
 import {productsInCart, setProductsInCart, setProductsInCartQuantity} from "../data/productsInCart.js";
+import {user} from "../data/user.js";
 import Navbar from "../components/Navbar.vue";
 
 export default {
@@ -69,6 +70,12 @@ export default {
             return this.products.reduce((acc, product) => {
                 return acc + product.quantity * product.price;
             }, 0);
+        },
+
+        getUsername() {
+            if(user.name) {
+                return user.name;
+            }
         }
     }
 }

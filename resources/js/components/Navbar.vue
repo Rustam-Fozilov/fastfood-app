@@ -24,7 +24,7 @@
                         <span>
                             <img src="http://127.0.0.1:8000/assets/navbar/user.svg" alt="user img">
                         </span>
-                        Login
+                        {{ this.username ? this.username : 'Login' }}
                     </router-link>
                 </div>
                 <div class="cart">
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+// import axios from "axios";
+
 import axios from "axios";
 
 export default {
@@ -48,6 +50,11 @@ export default {
     props: {
         cartLength: {
             type: Number,
+        },
+
+        username: {
+            type: String,
+            required: false,
         }
     },
 
@@ -55,6 +62,7 @@ export default {
         return {
             query: null,
             searchData: null,
+            isLogged: false,
         }
     },
 

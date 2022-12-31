@@ -1,5 +1,5 @@
 <template>
-    <Navbar :cart-length="this.lengthOfCart"/>
+    <Navbar :cart-length="this.lengthOfCart" :username="getUsername"/>
     <h1 style="text-align: center;">Natijalar</h1>
     <div class="result">
         <ProductItem :product="product" v-for="product in getSearchData" :key="getSearchData.id" @add-to-cart="addToCart"/>
@@ -11,6 +11,7 @@ import {useRoute} from "vue-router";
 import Navbar from "../components/Navbar.vue";
 import ProductItem from "../components/ProductItem.vue";
 import {productsInCart, setProductsInCart} from "../data/productsInCart.js";
+import {user} from "../data/user";
 
 export default {
     name: "SearchPage",
@@ -27,6 +28,12 @@ export default {
         getSearchData() {
             const route = useRoute();
             return JSON.parse(route.params.data);
+        },
+
+        getUsername() {
+            if(user.name) {
+                return user.name;
+            }
         }
     },
 

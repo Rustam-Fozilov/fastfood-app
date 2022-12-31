@@ -1,6 +1,6 @@
 <template>
-        <Navbar :cart-length="lengthOfCart"/>
-
+        <Navbar :cart-length="lengthOfCart" :username="getUsername"/>
+        <div v-if="getUser">USER: {{ this.getUser }}</div>
         <div class="banner">
             <img src="assets/home/banner.png" alt="banner">
         </div>
@@ -12,6 +12,7 @@
 import Navbar from '../components/Navbar.vue'
 import ProductList from "../components/ProductList.vue";
 import {productsInCart, setProductsInCart} from "../data/productsInCart.js";
+import {user} from "../data/user.js";
 
 export default {
     name: 'App',
@@ -24,6 +25,14 @@ export default {
     data() {
         return {
             lengthOfCart: productsInCart.length,
+        }
+    },
+
+    computed: {
+        getUsername() {
+            if(user.name) {
+                return user.name;
+            }
         }
     },
 

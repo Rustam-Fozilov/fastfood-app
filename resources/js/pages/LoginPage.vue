@@ -2,7 +2,7 @@
     <div class="login-container">
         <h1>Login</h1>
 
-        <p class="error-text"></p>
+        <p class="error-text">{{ this.error }}</p>
         <form action="" method="post" @submit.prevent="login">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -16,18 +16,40 @@
                 <button type="submit">LOGIN</button>
             </div>
         </form>
+        <p>Don't have account ? <router-link to="/register" style="text-decoration: underline;">register now</router-link></p>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import {user, setUser} from "../data/user";
+
 export default {
     name: "LoginPage",
     data() {
         return {
             email: null,
             password: null,
+            error: "",
         }
     },
+
+    methods: {
+        login() {
+            axios
+                .post('/api/login', {email: this.email, password: this.password})
+                .then(response => {
+                    if (response.data.status === 'success') {
+                        setUser(response.data.user);
+                        this.$router.push({
+                            name: 'Home',
+                        })
+                    } else {
+                        this.error = response.data.message;
+                    }
+                })
+        }
+    }
 }
 </script>
 
