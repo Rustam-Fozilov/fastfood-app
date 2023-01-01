@@ -39,15 +39,17 @@ export default {
                 .post('/api/login', {email: this.email, password: this.password})
                 .then(response => {
                     if (response.data.status === 'success') {
-                        setUser(response.data.user);
                         localStorage.setItem('loggedUser', JSON.stringify(response.data.user));
-                        console.log(localStorage.getItem('loggedUser'));
+                        localStorage.setItem('token', JSON.stringify(response.data.access_token.plainTextToken));
                         this.$router.push({
                             name: 'Home',
                         })
                     } else {
                         this.error = response.data.message;
                     }
+                })
+                .catch(error => {
+                    this.error = error.response.data.message;
                 })
         },
     }

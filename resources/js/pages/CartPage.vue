@@ -31,6 +31,7 @@
 <script>
 import {productsInCart, setProductsInCart, setProductsInCartQuantity} from "../data/productsInCart.js";
 import Navbar from "../components/Navbar.vue";
+import axios from "axios";
 
 export default {
     name: "CartPage",
@@ -60,7 +61,28 @@ export default {
         },
 
         confirm() {
-            this.$router.push('/login');
+            if(this.products.length > 0) {
+                if(localStorage.getItem('loggedUser')) {
+                    axios
+                        .post('/api/confirm_order', {
+                            products: this.products,
+                            user_id: JSON.parse(localStorage.getItem('loggedUser')).id,
+                        })
+                        .then(response => {
+                            setProductsInCart([]);
+                            this.products = productsInCart;
+                            alert(response.data.message)
+                            this.$router.push('/');
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.$router.push({
+                        name: 'Login',
+                    })
+                }
+            }
         }
     },
 
