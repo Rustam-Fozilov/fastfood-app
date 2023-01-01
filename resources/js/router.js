@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import SearchPage from "./pages/SearchPage.vue";
+import AdminPage from "./pages/admin/AdminPage.vue";
 
 const routes = [
     {
@@ -45,6 +46,11 @@ const routes = [
         name: "Search",
         component: SearchPage,
         props: true,
+    },
+    {
+        path: "/admin",
+        name: "Admin",
+        component: AdminPage,
     }
 ];
 

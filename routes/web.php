@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['domain' => 'admin.localhost'], function () {
+    Route::get('/', function () {
+        return view('admin');
+    });
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
