@@ -45,10 +45,6 @@ export default {
                         this.$router.push({
                             name: 'Home',
                         })
-                    } else if (response.data.role === 'admin') {
-                        this.$router.push({
-                            name: 'Admin',
-                        })
                     } else {
                         this.error = response.data.message;
                     }

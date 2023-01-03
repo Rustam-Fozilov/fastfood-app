@@ -15,15 +15,16 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
+                                    <p class="text-center text-danger">{{ this.error }}</p>
                                     <form class="user" @submit.prevent="login">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                    id="exampleInputEmail" aria-describedby="emailHelp"
-                                                   placeholder="Enter Email Address...">
+                                                   placeholder="Enter Email Address..." name="email" v-model="email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                   id="exampleInputPassword" placeholder="Password">
+                                                   id="exampleInputPassword" placeholder="Password" name="password" v-model="password">
                                         </div>
                                         <input class="btn btn-primary btn-user btn-block" type="submit" value="Login"/>
                                     </form>
@@ -42,14 +43,39 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "LoginPage",
-    emits: ['login'],
+    emits: ['admin-logged'],
+
+    data() {
+        return {
+            email: '',
+            password: '',
+            error: ''
+        }
+    },
 
     methods: {
         login() {
-            localStorage.setItem('token', '123456789');
-            this.$emit('login');
+            axios
+                .post('/api/login', {
+                    email: this.email,
+                    password: this.password
+                })
+                .then(response => {
+                    if(response.data.role === 'admin') {
+                        localStorage.setItem('token', JSON.stringify(response.data.token));
+                        localStorage.setItem('admin', JSON.stringify(response.data.user));
+                        this.$emit('admin-logged');
+                    } else {
+                        this.error = 'This user doesn\'t exist';
+                    }
+                })
+                .catch(error => {
+                    this.error = error.response.data.message;
+                });
         }
     }
 }

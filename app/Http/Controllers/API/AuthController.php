@@ -19,18 +19,26 @@ class AuthController extends Controller
         if(auth()->attempt($request->all())) {
             Auth::setUser(auth()->user());
 
-            if(User::where('is_admin', 1)->where('id', auth()->user()->id)->exists()) {
-                return response()->json([
-                    'role' => 'admin',
-                    'token' => auth()->user()->createToken('admin')->plainTextToken,
-                    'user' => auth()->user()
-                ], Response::HTTP_OK);
-            } else {
-                return response([
-                    'status' => 'success',
-                    'user' => auth()->user(),
-                    'access_token' => auth()->user()->createToken('authToken'),
-                ], Response::HTTP_OK);
+            $validated = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+            if($validated) {
+                if(User::where('is_admin', 1)->where('id', auth()->user()->id)->exists()) {
+                    return response([
+                        'role' => 'admin',
+                        'token' => auth()->user()->createToken('admin')->plainTextToken,
+                        'user' => auth()->user()
+                    ], Response::HTTP_OK);
+                } else {
+                    return response([
+                        'id' => auth()->user()->id,
+                        'status' => 'success',
+                        'user' => auth()->user(),
+                        'access_token' => auth()->user()->createToken('authToken'),
+                    ], Response::HTTP_OK);
+                }
             }
         }
 

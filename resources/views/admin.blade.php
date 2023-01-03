@@ -35,6 +35,7 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('assets_admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets_admin/js/demo/chart-pie-demo.js') }}"></script>
+
     @vite('resources/js/admin/app_admin.js')
 </body>
 </html>
