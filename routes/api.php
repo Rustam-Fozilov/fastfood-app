@@ -30,10 +30,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/confirm_order', [OrderController::class, 'store']);
-//create route with middleware for users
-//Route::group(['middleware' => ['auth']], function () {
-//    Route::post('/orders', [OrderController::class, 'index']);
-//    Route::get('/orders/{id}', [OrderController::class, 'show']);
-//});
+;
 
 Route::post('/orders', [OrderController::class, 'index']);
+Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+
+Route::post('/orders/search', [OrderController::class, 'search']);

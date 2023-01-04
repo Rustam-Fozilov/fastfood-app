@@ -61,7 +61,7 @@ class OrderController extends Controller
     {
         $request->validate([
             'products' => 'required|array',
-            'products.*.id' => 'required|integer',
+//            'products.*.id' => 'required|integer',
             'products.*.quantity' => 'required|integer',
         ]);
         $products = $request->products;
@@ -130,6 +130,39 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $order = Order::find($id);
+        $order->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Buyurtma o`chirildi',
+        ], Response::HTTP_OK);
+    }
+
+    public function search(Request $request)
+    {
+        $result = DB::table('orders')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->join('order_details', 'orders.order_id', '=', 'order_details.id')
+            ->select('orders.*', 'users.*', 'order_details.*')
+            ->where('users.name', 'like', '%'.$request->search.'%')
+            ->orWhere('users.email', 'like', '%'.$request->search.'%')
+            ->orWhere('users.id', 'like', '%'.$request->search.'%')
+            ->orWhere('order_details.product_name', 'like', '%'.$request->search.'%')
+            ->orWhere('orders.created_at', 'like', '%'.$request->search.'%')
+            ->get();
+
+        if($result) {
+            return response([
+                'status' => 'success',
+                'message' => 'Buyurtma topildi',
+                'result' => $result
+            ], Response::HTTP_OK);
+        } else {
+            return response([
+                'status' => 'error',
+                'message' => 'Buyurtma topilmadi',
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }

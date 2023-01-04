@@ -13,18 +13,70 @@
                 <div class="table-responsive o-hidden">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <div id="dataTable_filter" class="dataTables_filter">
-                                    <label
-                                    >Search:<input
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <form @submit.prevent="searchOrder" id="dataTable_length" class="dataTables_length">
+                                    <label>
+                                        <input
                                         type="search"
                                         class="form-control form-control-sm"
-                                        placeholder=""
+                                        placeholder="Search"
                                         aria-controls="dataTable"
-                                    /></label>
+                                        v-model="searchValue"
+                                        @input="searchOrder"/>
+                                    </label>
+                                    <button type="submit" class="btn btn-primary btn-sm ml-2">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+
+                                    <button @click.stop.prevent="getOrders" class="btn btn-success btn-sm ml-2">
+                                        <i class="fas fa fa-history fa-sm"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <div id="dataTable_filter" class="dataTables_filter" style="text-align: right;">
+                                    <label>
+                                        <button data-toggle="modal" data-target="#addOrderModal" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus fa-sm"></i>
+                                            Add new order
+                                        </button>
+                                    </label>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="addOrderModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add new order</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Username
+                                        <input type="text" class="form-control mb-3" v-model="newOrderInfo.username">
+                                        User id
+                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.user_id">
+                                        Email
+                                        <input type="text" class="form-control mb-3" v-model="newOrderInfo.email">
+                                        Product name
+                                        <select class="form-control mb-3" v-model="newOrderInfo.name" @change="selected()">
+                                            <option value="">Select product</option>
+                                            <option v-for="product in allProducts" :value="product.name">{{ product.name }}</option>
+                                        </select>
+                                        Quantity
+                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.quantity">
+                                        Product price
+                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.price">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button @click="addNewOrder" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <table
@@ -181,7 +233,7 @@
                                             <button class="btn btn-circle btn-sm btn-primary mr-2">
                                                 <i class="fas fa-light fa-pen"></i>
                                             </button>
-                                            <button class="btn btn-circle btn-sm btn-danger">
+                                            <button @click="deleteOrder(order.id)" class="btn btn-circle btn-sm btn-danger">
                                                 <i class="fas fa-trash"></i>
                                             </button>
 
@@ -302,22 +354,93 @@ export default {
 
     data() {
         return {
+            allProducts: null,
             ordersInfo: null,
+            searchValue: "",
+            newOrderInfo: [{
+                username: "",
+                user_id: 0,
+                email: "",
+                name: "",
+                quantity: 0,
+                price: 0,
+            }],
         }
     },
 
     created() {
-        axios
-            .post('/api/orders', {
-                'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+        this.getAllOrders();
+        this.getAllProducts();
+    },
+
+    methods: {
+        addNewOrder() {
+            axios.post("http://localhost:8000/api/confirm_order", {
+                products: this.newOrderInfo[1],
+                user_id: this.newOrderInfo.user_id
             })
-            .then(response => {
-                this.ordersInfo = response.data.orders;
-                console.log(this.ordersInfo);
+                .then(response => {
+                    console.log(response.data);
+                    this.getAllOrders();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        getAllProducts() {
+            axios.get("/api/products").then(response => {
+                this.allProducts = response.data;
             })
             .catch(error => {
                 console.log(error);
             });
+        },
+
+        getAllOrders() {
+            axios
+                .post('/api/orders', {
+                    'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+                })
+                .then(response => {
+                    this.ordersInfo = response.data.orders;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        deleteOrder(id) {
+            if(confirm('Are your sure ?')) {
+                axios
+                    .delete('/api/orders/' + id)
+                    .then(response => {
+                        console.log(response.message);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            this.getAllOrders();
+        },
+
+        searchOrder() {
+            axios
+                .post('/api/orders/search', {
+                    'search' : this.searchValue,
+                })
+                .then(response => {
+                    this.ordersInfo = response.data.result;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        selected() {
+            console.log('selected');
+        }
     }
 }
 </script>
