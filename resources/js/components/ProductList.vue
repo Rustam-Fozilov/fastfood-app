@@ -39,7 +39,7 @@ export default {
 
     created() {
         axios
-            .get('http://localhost:8000/api/products/')
+            .get('http://localhost:8000/api/products-pagination')
             .then(response => {
                 this.products = response.data.data
                 this.links = response.data.links

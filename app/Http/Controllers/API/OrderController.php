@@ -12,6 +12,29 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
+    public function ordersWithPagination(Request $request)
+    {
+        $orders = DB::table('orders')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->join('order_details', 'orders.order_id', '=', 'order_details.id')
+            ->select('orders.*', 'users.*', 'order_details.*')
+            ->orderBy('orders.created_at', 'desc')
+            ->paginate(20);
+
+        if($request->is_admin) {
+            return response([
+                'status' => 'success',
+                'message' => 'Barcha buyurtmalar',
+                'orders' => $orders
+            ], Response::HTTP_OK);
+        } else {
+            return response([
+                'status' => 'error',
+                'message' => 'Siz ro`yxatdan o`tgan emassiz',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,6 +48,7 @@ class OrderController extends Controller
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->join('order_details', 'orders.order_id', '=', 'order_details.id')
             ->select('orders.*', 'users.*', 'order_details.*')
+            ->orderBy('orders.created_at', 'desc')
             ->get();
 
         if($request->is_admin) {
@@ -61,8 +85,7 @@ class OrderController extends Controller
     {
         $request->validate([
             'products' => 'required|array',
-//            'products.*.id' => 'required|integer',
-            'products.*.quantity' => 'required|integer',
+            'user_id' => 'required|integer',
         ]);
         $products = $request->products;
 
@@ -70,10 +93,10 @@ class OrderController extends Controller
             $order = new Order();
             $order_details = new OrderDetails();
 
-            $order_details->product_name = $product['name'];
-            $order_details->product_price = $product['price'];
-            $order_details->product_quantity = $product['quantity'];
-            $order_details->total_price = $product['price'] * $product['quantity'];
+            $order_details->product_name = $product["name"];
+            $order_details->product_price = $product["price"];
+            $order_details->product_quantity = $product["quantity"];
+            $order_details->total_price = $product["price"] * $product["quantity"];
             $order_details->save();
 
             $order->order_id = $order_details->id;
@@ -128,10 +151,13 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $order = Order::find($id);
+        $order = Order::where('order_id', $id)->first();
         $order->delete();
+
+        $order_details = OrderDetails::find($id);
+        $order_details->delete();
 
         return response([
             'status' => 'success',
@@ -150,6 +176,7 @@ class OrderController extends Controller
             ->orWhere('users.id', 'like', '%'.$request->search.'%')
             ->orWhere('order_details.product_name', 'like', '%'.$request->search.'%')
             ->orWhere('orders.created_at', 'like', '%'.$request->search.'%')
+            ->orderBy('orders.created_at', 'asc')
             ->get();
 
         if($result) {

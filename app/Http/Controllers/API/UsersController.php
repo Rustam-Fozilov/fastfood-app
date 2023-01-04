@@ -3,26 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class ProductController extends Controller
+class UsersController extends Controller
 {
-    public function productsWithPagination(): \Illuminate\Http\JsonResponse
-    {
-        $products = Product::paginate(12);
-        return response()->json($products);
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $products = Product::all();
-        return response()->json($products);
+        $users = User::all()->where('is_admin', 0);
+        return response([
+            'status' => 'success',
+            'message' => 'Barcha foydalanuvchilar',
+            'users' => $users
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -50,12 +49,11 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        return response()->json($product);
+        //
     }
 
     /**

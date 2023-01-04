@@ -28,7 +28,7 @@
                                         <i class="fas fa-search fa-sm"></i>
                                     </button>
 
-                                    <button @click.stop.prevent="getOrders" class="btn btn-success btn-sm ml-2">
+                                    <button @click.stop.prevent="getAllOrders" class="btn btn-success btn-sm ml-2">
                                         <i class="fas fa fa-history fa-sm"></i>
                                     </button>
                                 </form>
@@ -45,6 +45,8 @@
                             </div>
                         </div>
 
+                        <p style="color: red;"> {{ this.errorText }}</p>
+
                         <div class="modal fade" id="addOrderModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -53,21 +55,18 @@
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        Username
-                                        <input type="text" class="form-control mb-3" v-model="newOrderInfo.username">
                                         User id
-                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.user_id">
-                                        Email
-                                        <input type="text" class="form-control mb-3" v-model="newOrderInfo.email">
+                                        <select class="form-control mb-3" v-model="newOrderInfo[0].user_id">
+                                            <option value="">Select user</option>
+                                            <option v-for="user in allUsers" :value="user.id">{{user.id + '-' +  user.name }}</option>
+                                        </select>
                                         Product name
-                                        <select class="form-control mb-3" v-model="newOrderInfo.name" @change="selected()">
+                                        <select class="form-control mb-3" v-model="newOrderInfo[0].name" @change="getSelectedProductPriceToNewOrder">
                                             <option value="">Select product</option>
                                             <option v-for="product in allProducts" :value="product.name">{{ product.name }}</option>
                                         </select>
                                         Quantity
-                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.quantity">
-                                        Product price
-                                        <input type="number" class="form-control mb-3" v-model="newOrderInfo.price">
+                                        <input type="number" min="1" class="form-control mb-3" v-model="newOrderInfo[0].quantity">
 
                                     </div>
                                     <div class="modal-footer">
@@ -243,7 +242,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="pagination_bootstrap" v-if="links.length > 3">
                             <div class="col-sm-12 col-md-3">
                                 <div
                                     class="dataTables_paginate paging_simple_numbers"
@@ -251,87 +250,14 @@
                                 >
                                     <ul class="pagination">
                                         <li
-                                            class="paginate_button page-item previous disabled"
-                                            id="dataTable_previous"
+                                            class="page-item" :class="link.active ? 'active' : ''"
+                                            v-for="(link, idx) in links"
+                                            @click="paginate(idx)"
                                         >
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="0"
-                                                tabindex="0"
+                                            <span
+                                                style="cursor: pointer;"
                                                 class="page-link"
-                                            >Previous</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item active">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="1"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >1</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="2"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >2</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="3"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >3</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="4"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >4</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="5"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >5</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="6"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >6</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item next" id="dataTable_next">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="7"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >Next</a
-                                            >
+                                                v-html="link.label"></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -341,7 +267,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
 </template>
@@ -354,36 +279,80 @@ export default {
 
     data() {
         return {
+            allUsers: null,
             allProducts: null,
             ordersInfo: null,
             searchValue: "",
+
             newOrderInfo: [{
-                username: "",
                 user_id: 0,
-                email: "",
                 name: "",
                 quantity: 0,
                 price: 0,
             }],
+
+            errorText: '',
+            links: [],
         }
     },
 
     created() {
-        this.getAllOrders();
+        this.getPagination();
         this.getAllProducts();
+        this.getAllUsers();
     },
 
     methods: {
+        paginate(i) {
+            axios
+                .post(String(this.links[i].url), {
+                    'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+                })
+                .then(response => {
+                    this.ordersInfo = response.data.orders.data;
+                    this.links = response.data.orders.links;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        getPagination() {
+            axios
+                .post("http://localhost:8000/api/orders-pagination", {
+                    'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+                })
+                .then((response) => {
+                    this.ordersInfo = response.data.orders.data;
+                    this.links = response.data.orders.links;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         addNewOrder() {
             axios.post("http://localhost:8000/api/confirm_order", {
-                products: this.newOrderInfo[1],
-                user_id: this.newOrderInfo.user_id
+                products: this.newOrderInfo,
+                user_id: this.newOrderInfo[0].user_id
             })
                 .then(response => {
-                    console.log(response.data);
+                    this.errorText = '';
                     this.getAllOrders();
                 })
                 .catch(error => {
+                    console.log(error);
+                    this.errorText = 'OOPS Something went wrong!';
+                });
+        },
+
+        getAllUsers() {
+            axios
+                .get("http://localhost:8000/api/users")
+                .then((response) => {
+                    this.allUsers = response.data.users;
+                })
+                .catch((error) => {
                     console.log(error);
                 });
         },
@@ -408,6 +377,8 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+
+            console.log(this.ordersInfo);
         },
 
         deleteOrder(id) {
@@ -415,14 +386,14 @@ export default {
                 axios
                     .delete('/api/orders/' + id)
                     .then(response => {
-                        console.log(response.message);
+                        console.log(response.data.message);
+                        this.getAllOrders();
                     })
                     .catch(error => {
                         console.log(error);
+                        console.log(JSON.parse(localStorage.getItem('admin')).is_admin)
                     });
             }
-
-            this.getAllOrders();
         },
 
         searchOrder() {
@@ -438,10 +409,14 @@ export default {
                 });
         },
 
-        selected() {
-            console.log('selected');
-        }
-    }
+        getSelectedProductPriceToNewOrder() {
+            this.allProducts.forEach(product => {
+                if(product.name === this.newOrderInfo[0].name) {
+                    this.newOrderInfo[0].price = product.price;
+                }
+            });
+        },
+    },
 }
 </script>
 
