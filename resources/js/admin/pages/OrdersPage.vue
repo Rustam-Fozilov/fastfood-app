@@ -76,6 +76,34 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" id="updateOrderModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Update order</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        User id
+                                        <select class="form-control mb-3" v-model="updateOrderInfo[0].user_id">
+                                            <option value="">Select user</option>
+                                            <option v-for="user in allUsers" :value="user.id">{{user.id + '-' +  user.name }}</option>
+                                        </select>
+                                        Product name
+                                        <select class="form-control mb-3" v-model="updateOrderInfo[0].name" @change="getSelectedProductPriceToUpdateOrder">
+                                            <option value="">Select product</option>
+                                            <option v-for="product in allProducts" :value="product.name">{{ product.name }}</option>
+                                        </select>
+                                        Quantity
+                                        <input type="number" min="1" class="form-control mb-3" v-model="updateOrderInfo[0].quantity">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button @click="updateOrder()" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <table
@@ -229,9 +257,14 @@
                                         <td>{{ order.total_price }} $</td>
                                         <td>{{ order.created_at }}</td>
                                         <td>
-                                            <button class="btn btn-circle btn-sm btn-primary mr-2">
+                                            <button
+                                                @click="updateOrderInfo[0].order_id = order.id"
+                                                data-toggle="modal" data-target="#updateOrderModal"
+                                                class="btn btn-circle btn-sm btn-primary mr-2"
+                                            >
                                                 <i class="fas fa-light fa-pen"></i>
                                             </button>
+
                                             <button @click="deleteOrder(order.id)" class="btn btn-circle btn-sm btn-danger">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -285,6 +318,14 @@ export default {
             searchValue: "",
 
             newOrderInfo: [{
+                user_id: 0,
+                name: "",
+                quantity: 0,
+                price: 0,
+            }],
+
+            updateOrderInfo: [{
+                order_id: 0,
                 user_id: 0,
                 name: "",
                 quantity: 0,
@@ -346,6 +387,21 @@ export default {
                 });
         },
 
+        updateOrder() {
+            axios.put("http://localhost:8000/api/orders/" + this.updateOrderInfo[0].order_id, {
+                'user_id': this.updateOrderInfo[0].user_id,
+                'products': this.updateOrderInfo[0],
+            })
+                .then(response => {
+                    this.errorText = '';
+                    this.getAllOrders();
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorText = 'OOPS Something went wrong!';
+                });
+        },
+
         getAllUsers() {
             axios
                 .get("http://localhost:8000/api/users")
@@ -372,13 +428,12 @@ export default {
                     'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
                 })
                 .then(response => {
+                    console.log(response.data);
                     this.ordersInfo = response.data.orders;
                 })
                 .catch(error => {
                     console.log(error);
                 });
-
-            console.log(this.ordersInfo);
         },
 
         deleteOrder(id) {
@@ -413,6 +468,14 @@ export default {
             this.allProducts.forEach(product => {
                 if(product.name === this.newOrderInfo[0].name) {
                     this.newOrderInfo[0].price = product.price;
+                }
+            });
+        },
+
+        getSelectedProductPriceToUpdateOrder() {
+            this.allProducts.forEach(product => {
+                if(product.name === this.updateOrderInfo[0].name) {
+                    this.updateOrderInfo[0].price = product.price;
                 }
             });
         },

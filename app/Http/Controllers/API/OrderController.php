@@ -119,7 +119,19 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $orders = DB::table('orders')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->join('order_details', 'orders.order_id', '=', 'order_details.id')
+            ->select('orders.*', 'users.*', 'order_details.*')
+            ->where('orders.user_id', $id)
+            ->orderBy('orders.created_at', 'desc')
+            ->get();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Sizning buyurtmalaringiz',
+            'orders' => $orders
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -140,9 +152,27 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $order = Order::where('order_id', $id)->first();
+        $order->user_id = $request->user_id;
+
+        $order_details = OrderDetails::find($order->order_id);
+        $product = $request->products;
+
+        $order_details->product_name = $product["name"];
+        $order_details->product_price = $product["price"];
+        $order_details->product_quantity = $product["quantity"];
+        $order_details->total_price = $product["price"] * $product["quantity"];
+        $order_details->save();
+        $order->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Buyurtma muvaffaqiyatli yangilandi',
+            'order' => $order
+        ], Response::HTTP_OK);
+
     }
 
     /**

@@ -37,5 +37,6 @@ Route::get('/users', [UsersController::class, 'index']);
 Route::post('/confirm_order', [OrderController::class, 'store']);
 Route::post('/orders', [OrderController::class, 'index']);
 Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+Route::put('/orders/{id}', [OrderController::class, 'update']);
 Route::post('/orders-pagination', [OrderController::class, 'ordersWithPagination']);
 Route::post('/orders/search', [OrderController::class, 'search']);
