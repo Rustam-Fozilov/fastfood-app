@@ -10,39 +10,93 @@
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive o-hidden">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_length" id="dataTable_length">
-                                    <label
-                                    >Show
-                                        <select
-                                            name="dataTable_length"
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <form @submit.prevent="searchProduct" id="dataTable_length" class="dataTables_length">
+                                    <label>
+                                        <input
+                                            type="search"
+                                            class="form-control form-control-sm"
+                                            placeholder="Search"
                                             aria-controls="dataTable"
-                                            class="custom-select custom-select-sm form-control form-control-sm"
-                                        >
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
-                                        entries</label
-                                    >
-                                </div>
+                                            v-model="searchValue"
+                                            @input="searchProduct"/>
+                                    </label>
+                                    <button type="submit" class="btn btn-primary btn-sm ml-2">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+
+                                    <button @click.stop.prevent="getAllProducts" class="btn btn-success btn-sm ml-2">
+                                        <i class="fas fa fa-history fa-sm"></i>
+                                    </button>
+                                </form>
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div id="dataTable_filter" class="dataTables_filter">
-                                    <label
-                                    >Search:<input
-                                        type="search"
-                                        class="form-control form-control-sm"
-                                        placeholder=""
-                                        aria-controls="dataTable"
-                                    /></label>
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <div id="dataTable_filter" class="dataTables_filter" style="text-align: right;">
+                                    <label>
+                                        <button data-toggle="modal" data-target="#addProductModal" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus fa-sm"></i>
+                                            Add new product
+                                        </button>
+                                    </label>
                                 </div>
                             </div>
                         </div>
+
+                        <p style="color: red;"> {{ this.errorText }}</p>
+
+                        <div class="modal fade" id="addProductModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add new product</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Name
+                                        <input type="text" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].name">
+                                        Price
+                                        <input type="number" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].price">
+                                        description
+                                        <textarea style="resize: none" type="password" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].description">
+                                        </textarea>
+                                        Image
+                                        <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="previewFile">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button @click="addNewProduct" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="updateUserModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Update product</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Name
+                                        <input type="text" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].name">
+                                        Price
+                                        <input type="number" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].price">
+                                        description
+                                        <textarea style="resize: none" type="password" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].description">
+                                        </textarea>
+                                        Image
+                                        <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="updateProductInfo[0].image_name">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button @click="updateProduct" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <table
@@ -64,7 +118,30 @@
                                             colspan="1"
                                             aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending"
-                                            style="width: 261px"
+                                            style="width: 20px"
+                                        >
+                                            №
+                                        </th>
+                                        <th
+                                            class="sorting sorting_asc"
+                                            tabindex="0"
+                                            aria-controls="dataTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-sort="ascending"
+                                            aria-label="Name: activate to sort column descending"
+                                            style="width: 20px"
+                                        >
+                                            Image
+                                        </th>
+                                        <th
+                                            class="sorting"
+                                            tabindex="0"
+                                            aria-controls="dataTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Position: activate to sort column ascending"
+                                            style="width: 96px"
                                         >
                                             Name
                                         </th>
@@ -75,31 +152,9 @@
                                             rowspan="1"
                                             colspan="1"
                                             aria-label="Position: activate to sort column ascending"
-                                            style="width: 390px"
-                                        >
-                                            Position
-                                        </th>
-                                        <th
-                                            class="sorting"
-                                            tabindex="0"
-                                            aria-controls="dataTable"
-                                            rowspan="1"
-                                            colspan="1"
-                                            aria-label="Office: activate to sort column ascending"
-                                            style="width: 192px"
-                                        >
-                                            Office
-                                        </th>
-                                        <th
-                                            class="sorting"
-                                            tabindex="0"
-                                            aria-controls="dataTable"
-                                            rowspan="1"
-                                            colspan="1"
-                                            aria-label="Age: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Age
+                                            Price
                                         </th>
                                         <th
                                             class="sorting"
@@ -107,10 +162,10 @@
                                             aria-controls="dataTable"
                                             rowspan="1"
                                             colspan="1"
-                                            aria-label="Start date: activate to sort column ascending"
-                                            style="width: 182px"
+                                            aria-label="Position: activate to sort column ascending"
+                                            style="width: 96px"
                                         >
-                                            Start date
+                                            description
                                         </th>
                                         <th
                                             class="sorting"
@@ -118,207 +173,70 @@
                                             aria-controls="dataTable"
                                             rowspan="1"
                                             colspan="1"
-                                            aria-label="Salary: activate to sort column ascending"
-                                            style="width: 165px"
+                                            aria-label="Position: activate to sort column ascending"
+                                            style="width: 96px"
                                         >
-                                            Salary
+                                            Action
                                         </th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <th rowspan="1" colspan="1">№</th>
+                                        <th rowspan="1" colspan="1">Image</th>
                                         <th rowspan="1" colspan="1">Name</th>
-                                        <th rowspan="1" colspan="1">Position</th>
-                                        <th rowspan="1" colspan="1">Office</th>
-                                        <th rowspan="1" colspan="1">Age</th>
-                                        <th rowspan="1" colspan="1">Start date</th>
-                                        <th rowspan="1" colspan="1">Salary</th>
+                                        <th rowspan="1" colspan="1">Price</th>
+                                        <th rowspan="1" colspan="1">Description</th>
+                                        <th rowspan="1" colspan="1">Action</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                    <tr class="odd">
-                                        <td class="sorting_1">Airi Satou</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>33</td>
-                                        <td>2008/11/28</td>
-                                        <td>$162,700</td>
-                                    </tr>
-                                    <tr class="even">
-                                        <td class="sorting_1">Angelica Ramos</td>
-                                        <td>Chief Executive Officer (CEO)</td>
-                                        <td>London</td>
-                                        <td>47</td>
-                                        <td>2009/10/09</td>
-                                        <td>$1,200,000</td>
-                                    </tr>
-                                    <tr class="odd">
-                                        <td class="sorting_1">Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>2009/01/12</td>
-                                        <td>$86,000</td>
-                                    </tr>
-                                    <tr class="even">
-                                        <td class="sorting_1">Bradley Greer</td>
-                                        <td>Software Engineer</td>
-                                        <td>London</td>
-                                        <td>41</td>
-                                        <td>2012/10/13</td>
-                                        <td>$132,000</td>
-                                    </tr>
-                                    <tr class="odd">
-                                        <td class="sorting_1">Brenden Wagner</td>
-                                        <td>Software Engineer</td>
-                                        <td>San Francisco</td>
-                                        <td>28</td>
-                                        <td>2011/06/07</td>
-                                        <td>$206,850</td>
-                                    </tr>
-                                    <tr class="even">
-                                        <td class="sorting_1">Brielle Williamson</td>
-                                        <td>Integration Specialist</td>
-                                        <td>New York</td>
-                                        <td>61</td>
-                                        <td>2012/12/02</td>
-                                        <td>$372,000</td>
-                                    </tr>
-                                    <tr class="odd">
-                                        <td class="sorting_1">Bruno Nash</td>
-                                        <td>Software Engineer</td>
-                                        <td>London</td>
-                                        <td>38</td>
-                                        <td>2011/05/03</td>
-                                        <td>$163,500</td>
-                                    </tr>
-                                    <tr class="even">
-                                        <td class="sorting_1">Caesar Vance</td>
-                                        <td>Pre-Sales Support</td>
-                                        <td>New York</td>
-                                        <td>21</td>
-                                        <td>2011/12/12</td>
-                                        <td>$106,450</td>
-                                    </tr>
-                                    <tr class="odd">
-                                        <td class="sorting_1">Cara Stevens</td>
-                                        <td>Sales Assistant</td>
-                                        <td>New York</td>
-                                        <td>46</td>
-                                        <td>2011/12/06</td>
-                                        <td>$145,600</td>
-                                    </tr>
-                                    <tr class="even">
-                                        <td class="sorting_1">Cedric Kelly</td>
-                                        <td>Senior Javascript Developer</td>
-                                        <td>Edinburgh</td>
-                                        <td>22</td>
-                                        <td>2012/03/29</td>
-                                        <td>$433,060</td>
+                                    <tr class="odd" v-for="(product, idx) in allProducts">
+                                        <td class="sorting_1">{{ idx }}</td>
+                                        <td>
+                                            <span>
+                                                <img :src="'http://127.0.0.1:8000/assets/products/'+product.image_name" alt="image" style="width: 100px;">
+                                            </span>
+                                        </td>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.description }}</td>
+                                        <td>
+                                            <button
+                                                @click="updateProductInfo[0].id = product.id"
+                                                data-toggle="modal" data-target="#updateProductModal"
+                                                class="btn btn-circle btn-sm btn-primary mr-2"
+                                            >
+                                                <i class="fas fa-light fa-pen"></i>
+                                            </button>
+
+                                            <button @click="deleteProduct(product.id)" class="btn btn-circle btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-5">
-                                <div
-                                    class="dataTables_info"
-                                    id="dataTable_info"
-                                    role="status"
-                                    aria-live="polite"
-                                >
-                                    Showing 1 to 10 of 57 entries
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-7">
+
+                        <div class="row" id="pagination_bootstrap" v-if="links.length > 3">
+                            <div class="col-sm-12 col-md-3">
                                 <div
                                     class="dataTables_paginate paging_simple_numbers"
                                     id="dataTable_paginate"
                                 >
                                     <ul class="pagination">
                                         <li
-                                            class="paginate_button page-item previous disabled"
-                                            id="dataTable_previous"
+                                            class="page-item" :class="link.active ? 'active' : ''"
+                                            v-for="(link, idx) in links"
+                                            @click="paginate(idx)"
                                         >
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="0"
-                                                tabindex="0"
+                                            <span
+                                                style="cursor: pointer;"
                                                 class="page-link"
-                                            >Previous</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item active">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="1"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >1</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="2"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >2</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="3"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >3</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="4"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >4</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="5"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >5</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="6"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >6</a
-                                            >
-                                        </li>
-                                        <li class="paginate_button page-item next" id="dataTable_next">
-                                            <a
-                                                href="#"
-                                                aria-controls="dataTable"
-                                                data-dt-idx="7"
-                                                tabindex="0"
-                                                class="page-link"
-                                            >Next</a
-                                            >
+                                                v-html="link.label"></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -329,7 +247,6 @@
             </div>
         </div>
 
-
     </div>
 </template>
 
@@ -338,6 +255,149 @@ import axios from "axios";
 
 export default {
     name: "ProductsPage",
+
+    data() {
+        return {
+            allProducts: [],
+            links: [],
+            searchValue: '',
+            errorText: '',
+
+            newProductInfo: [{
+                name: '',
+                price: 0,
+                description: '',
+                image: [],
+            }],
+
+            updateProductInfo: [{
+                id: '',
+                name: '',
+                price: 0,
+                description: '',
+                image_name: '',
+            }],
+        }
+    },
+
+    created() {
+        this.getAllProducts();
+        this.getPagination();
+    },
+
+    methods: {
+        deleteProduct(id) {
+            if(confirm('Are you sure?')) {
+                axios
+                    .delete('/api/products/' + id)
+                    .then(response => {
+                        console.log(response.data.message)
+                        this.getAllProducts();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+        },
+
+        previewFile(event) {
+            this.newProductInfo[0].image = event.target.files[0];
+            console.log(this.newProductInfo[0].image);
+        },
+
+        addNewProduct() {
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+
+            let formData = new FormData();
+            formData.append('name', this.newProductInfo[0].name);
+            formData.append('price', this.newProductInfo[0].price);
+            formData.append('description', this.newProductInfo[0].description);
+            formData.append('image', this.newProductInfo[0].image);
+
+            axios
+                .post('/api/products', formData, config)
+                .then(response => {
+                    console.log(response.data.message)
+                    this.getAllProducts();
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorText = error.response.data.message;
+                });
+        },
+
+        paginate(i) {
+            // axios
+            //     .post(String(this.links[i].url), {
+            //         'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+            //     })
+            //     .then(response => {
+            //         this.allProducts = response.data.products.data;
+            //         this.links = response.data.products.links;
+            //     })
+            //     .catch(error => {
+            //         console.log(error);
+            //     });
+        },
+
+        getPagination() {
+            // axios
+            //     .get("http://localhost:8000/api/products-pagination", {
+            //         'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+            //     })
+            //     .then((response) => {
+            //         this.allProducts = response.data.products.data;
+            //         this.links = response.data.products.links;
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+        },
+
+        searchProduct() {
+            axios
+                .post('/api/search', {
+                    search: this.searchValue
+                })
+                .then(response => {
+                    this.allProducts = response.data.users;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        getAllProducts() {
+            axios.get('/api/products')
+                .then(response => {
+                    this.allProducts = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        updateProduct() {
+            axios
+                .put('/api/products/' + this.updateProductInfo[0].id, {
+                    name: this.updateProductInfo[0].name,
+                    price: this.updateProductInfo[0].price,
+                    description: this.updateProductInfo[0].description,
+                    image_name: this.updateProductInfo[0].image_name,
+                })
+                .then(response => {
+                    console.log(response.data.message)
+                    this.getAllProducts();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+    }
 }
 </script>
 

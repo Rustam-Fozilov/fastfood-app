@@ -5,7 +5,7 @@
         <div class="cart-container">
             <div class="cart-item" v-for="product in products" :key="product.id">
                 <div class="cart-item-image">
-                    <img src="assets/products/burger.png" alt="product image">
+                    <img :src="'assets/products/' + product.image_name" alt="product image">
                 </div>
                 <div class="cart-item-info">
                     <p>{{ product.name }}</p>

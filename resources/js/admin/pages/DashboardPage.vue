@@ -9,9 +9,9 @@
         </div>
 
         <!-- Content Row -->
-        <div class="row">
+        <div class="row" style="justify-content: start">
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- All products Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- Users Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
@@ -39,7 +39,7 @@
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     All users
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ this.users.length }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- Orders Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ this.orders.length }}</div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
@@ -73,24 +73,6 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -341,11 +323,15 @@ export default {
     data() {
         return {
             products: [],
+            users: [],
+            orders: [],
         }
     },
 
     created() {
         this.getProducts();
+        this.getUsers();
+        this.getOrders();
     },
 
     methods: {
@@ -357,7 +343,29 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
-        }
+        },
+
+        getUsers() {
+            axios.get('/api/users')
+                .then(response => {
+                    this.users = response.data.users;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        getOrders() {
+            axios.post('/api/orders', {
+                is_admin: JSON.parse(localStorage.getItem('admin')).is_admin,
+            })
+            .then(response => {
+                this.orders = response.data.orders;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
     }
 }
 </script>

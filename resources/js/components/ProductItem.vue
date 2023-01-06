@@ -3,7 +3,7 @@
         <router-link :to="'/product/' + product.id">
             <span>
                 <div class="product_image">
-                    <img src="http://127.0.0.1:8000/assets/products/burger.png" alt="product_image">
+                    <img :src="'http://127.0.0.1:8000/assets/products/' + this.product.image_name" alt="product_image">
                 </div>
                 <div class="product_info">
                     <h3>{{ product.name }}</h3>

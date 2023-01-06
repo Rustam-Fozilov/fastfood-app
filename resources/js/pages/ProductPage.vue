@@ -2,7 +2,7 @@
     <Navbar :cart-length="lengthOfCart" :username="getUsername"/>
     <div class="product-container">
         <div class="product-container__image">
-            <img src="http://127.0.0.1:8000/assets/products/burger.png" alt="product image">
+            <img :src="'http://127.0.0.1:8000/assets/products/' + product.image_name" alt="product image">
         </div>
         <div class="product-container__info">
             <p class="product-container__title">{{product.name}}</p>
