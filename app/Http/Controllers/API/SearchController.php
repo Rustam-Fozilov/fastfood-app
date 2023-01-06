@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function index(Request $request)
+    public function products(Request $request)
     {
         $search = $request->input('query');
         $products = Product::where('name', 'like', "%$search%")->get();

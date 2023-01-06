@@ -446,7 +446,6 @@ export default {
                     })
                     .catch(error => {
                         console.log(error);
-                        console.log(JSON.parse(localStorage.getItem('admin')).is_admin)
                     });
             }
         },

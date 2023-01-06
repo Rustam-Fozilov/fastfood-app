@@ -26,13 +26,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/products-pagination', [ProductController::class, 'productsWithPagination']);
-Route::post('/search', [SearchController::class, 'index']);
+Route::post('/search', [SearchController::class, 'products']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/users', [UsersController::class, 'index']);
+Route::post('/users/search', [UsersController::class, 'search']);
+Route::post('/users', [UsersController::class, 'store']);
+Route::delete('/users/{id}', [UsersController::class, 'destroy']);
+Route::put('/users/{id}', [UsersController::class, 'update']);
+Route::post('/users-pagination', [UsersController::class, 'usersWithPagination']);
 
 Route::post('/confirm_order', [OrderController::class, 'store']);
 Route::post('/orders', [OrderController::class, 'index']);
