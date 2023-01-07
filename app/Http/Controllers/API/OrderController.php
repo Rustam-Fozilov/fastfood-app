@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
+    public function export() {
+        return Excel::download(new OrdersExport, 'orders.xlsx');
+    }
+
     public function ordersWithPagination(Request $request)
     {
         $orders = DB::table('orders')
@@ -42,8 +48,6 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-//        $orders = Order::with(['orderDetails', 'user'])->first();
-
         $orders = DB::table('orders')
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->join('order_details', 'orders.order_id', '=', 'order_details.id')

@@ -36,6 +36,9 @@
                             <div class="col-sm-12 col-md-6 mt-2">
                                 <div id="dataTable_filter" class="dataTables_filter" style="text-align: right;">
                                     <label>
+                                        <a href="http://admin.localhost:8000/api/products-export" class="btn btn-success btn-sm mr-3">
+                                            Download CSV
+                                        </a>
                                         <button data-toggle="modal" data-target="#addProductModal" class="btn btn-primary btn-sm">
                                             <i class="fas fa-plus fa-sm"></i>
                                             Add new product
@@ -199,7 +202,7 @@
                                             </span>
                                         </td>
                                         <td>{{ product.name }}</td>
-                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.price }} $</td>
                                         <td>{{ product.description }}</td>
                                         <td>
                                             <button

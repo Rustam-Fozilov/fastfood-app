@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
     public function usersWithPagination(Request $request) {
         $users = DB::table('users')->where('is_admin', 0)->paginate(20);
 
