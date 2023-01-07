@@ -11,7 +11,7 @@ class SearchController extends Controller
     public function products(Request $request)
     {
         $search = $request->input('query');
-        $products = Product::where('name', 'like', "%$search%")->get();
+        $products = Product::where('name', 'like', "%$search%")->orderBy('name')->get();
         return response()->json($products);
     }
 }

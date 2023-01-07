@@ -72,7 +72,7 @@
                             </div>
                         </div>
 
-                        <div class="modal fade" id="updateUserModal">
+                        <div class="modal fade" id="updateProductModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -88,7 +88,7 @@
                                         <textarea style="resize: none" type="password" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].description">
                                         </textarea>
                                         Image
-                                        <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="updateProductInfo[0].image_name">
+                                        <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="updateImage">
                                     </div>
                                     <div class="modal-footer">
                                         <button @click="updateProduct" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
@@ -210,7 +210,7 @@
                                                 <i class="fas fa-light fa-pen"></i>
                                             </button>
 
-                                            <button @click="deleteProduct(product.id)" class="btn btn-circle btn-sm btn-danger">
+                                            <button @click="deleteProduct(product.name)" class="btn btn-circle btn-sm btn-danger">
                                                 <i class="fas fa-trash"></i>
                                             </button>
 
@@ -275,7 +275,7 @@ export default {
                 name: '',
                 price: 0,
                 description: '',
-                image_name: '',
+                image: [],
             }],
         }
     },
@@ -286,10 +286,40 @@ export default {
     },
 
     methods: {
-        deleteProduct(id) {
+        updateImage(event) {
+            this.updateProductInfo[0].image = event.target.files[0];
+            console.log(this.updateProductInfo[0].image);
+        },
+
+        updateProduct() {
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+
+            let formData2 = new FormData();
+            formData2.append('name', this.updateProductInfo[0].name);
+            formData2.append('price', this.updateProductInfo[0].price);
+            formData2.append('description', this.updateProductInfo[0].description);
+            formData2.append('image', this.updateProductInfo[0].image);
+
+            axios
+                .post('/api/products/' + this.updateProductInfo[0].id, formData2, config)
+                .then(response => {
+                    console.log(response.data.message)
+                    this.getAllProducts();
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorText = error.response.data.message;
+                });
+        },
+
+        deleteProduct(name) {
             if(confirm('Are you sure?')) {
                 axios
-                    .delete('/api/products/' + id)
+                    .delete('/api/products/' + name)
                     .then(response => {
                         console.log(response.data.message)
                         this.getAllProducts();
@@ -361,10 +391,10 @@ export default {
         searchProduct() {
             axios
                 .post('/api/search', {
-                    search: this.searchValue
+                    query: this.searchValue
                 })
                 .then(response => {
-                    this.allProducts = response.data.users;
+                    this.allProducts = response.data;
                 })
                 .catch(error => {
                     console.log(error);
@@ -375,27 +405,11 @@ export default {
             axios.get('/api/products')
                 .then(response => {
                     this.allProducts = response.data;
+                    this.errorText = '';
                 })
                 .catch(error => {
                     console.log(error);
                 })
-        },
-
-        updateProduct() {
-            axios
-                .put('/api/products/' + this.updateProductInfo[0].id, {
-                    name: this.updateProductInfo[0].name,
-                    price: this.updateProductInfo[0].price,
-                    description: this.updateProductInfo[0].description,
-                    image_name: this.updateProductInfo[0].image_name,
-                })
-                .then(response => {
-                    console.log(response.data.message)
-                    this.getAllProducts();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
     }
 }
