@@ -18,7 +18,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    All products
+                                    Barcha mahsulotlar
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ this.products.length }}</div>
                             </div>
@@ -37,7 +37,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    All users
+                                    Barcha foydalanuvchilar
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ this.users.length }}</div>
                             </div>
@@ -56,7 +56,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    All orders
+                                    Barcha buyurtmalar
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">

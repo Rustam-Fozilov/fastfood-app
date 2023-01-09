@@ -1,5 +1,5 @@
 <template>
-    <p class="product-list__title">Burgers</p>
+    <p class="product-list__title">Mahsulotlar</p>
     <div class="product-list">
         <ProductItem v-for="product in products" :key="product.id" :product="product" @add-to-cart="addToCart"/>
     </div>

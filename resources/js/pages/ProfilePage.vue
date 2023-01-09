@@ -1,12 +1,12 @@
 <template>
     <div class="background_profile">
         <div class="profile_container">
-            <h1>Profile page</h1>
+            <h1>Profile</h1>
             <img src="http://127.0.0.1:8000/assets/profile/user.png" alt="user image">
             <h3>User Id: <span>{{ this.user.id }}</span></h3>
-            <h3>Name: <span>{{ this.user.name }}</span></h3>
+            <h3>Ism: <span>{{ this.user.name }}</span></h3>
             <h3 style="margin-bottom: 40px;">Email: <span>{{ this.user.email }}</span></h3>
-            <button class="btn" @click="logout">LOGOUT</button>
+            <button class="btn" @click="logout">CHIQISH</button>
         </div>
     </div>
 </template>

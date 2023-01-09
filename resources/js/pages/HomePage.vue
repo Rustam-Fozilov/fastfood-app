@@ -1,6 +1,5 @@
 <template>
         <Navbar :cart-length="lengthOfCart" :username="getUsername"/>
-        <div v-if="getUser">USER: {{ this.getUser }}</div>
         <div class="banner">
             <img src="assets/home/banner.png" alt="banner">
         </div>

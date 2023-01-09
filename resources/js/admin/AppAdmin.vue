@@ -33,7 +33,7 @@
             <li class="nav-item">
                 <router-link to="/products" class="nav-link">
                     <i class="fas fa fa-fw fa-th-large"></i>
-                    <span> Products</span>
+                    <span> Mahsulotlar</span>
                 </router-link>
             </li>
 
@@ -41,14 +41,14 @@
             <li class="nav-item">
                 <router-link to="/users" class="nav-link">
                     <i class="fas fa fa-fw fa-users"></i>
-                    <span> Users</span>
+                    <span> Foydalanuvchilar</span>
                 </router-link>
             </li>
 
             <li class="nav-item">
                 <router-link to="/orders" class="nav-link">
                     <i class="fas fa fa-fw fa-shopping-basket"></i>
-                    <span> Orders</span>
+                    <span> Buyurtmalar</span>
                 </router-link>
             </li>
 
@@ -59,7 +59,7 @@
             <li class="nav-item">
                 <router-link to="/" @click="logout" class="nav-link">
                     <i class="fa-fw fa fa-reply-all"></i>
-                    <span> Log out</span>
+                    <span> Chiqish</span>
                 </router-link>
             </li>
 
@@ -166,41 +166,4 @@ export default {
 </script>
 
 <style scoped>
-/*@font-face {*/
-/*    font-family: 'Inter-Regular';*/
-/*    src: url('assets/fonts/Inter-Regular.ttf');*/
-/*}*/
-
-/*html, body {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    font-family: Inter-Regular;*/
-/*}*/
-
-/*a {*/
-/*    text-decoration: none;*/
-/*    color: black;*/
-/*}*/
-
-/*.btn {*/
-/*    padding: 15px 35px;*/
-/*    border: none;*/
-/*    border-radius: 5px;*/
-/*    background-color: #000;*/
-/*    color: #fff;*/
-/*    font-size: 18px;*/
-/*    cursor: pointer;*/
-/*    transition: 0.2s;*/
-/*}*/
-
-/*.btn:hover {*/
-/*    opacity: 0.7;*/
-/*}*/
-
-/*.container {*/
-/*    margin: 0 auto;*/
-/*    width: 1260px;*/
-/*}*/
 </style>

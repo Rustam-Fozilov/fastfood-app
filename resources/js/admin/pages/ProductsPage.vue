@@ -2,12 +2,11 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">All products</h1>
+        <h1 class="h3 mb-2 text-gray-800">Barcha mahsulotlar</h1>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive o-hidden">
@@ -19,7 +18,7 @@
                                         <input
                                             type="search"
                                             class="form-control form-control-sm"
-                                            placeholder="Search"
+                                            placeholder="Qidiring"
                                             aria-controls="dataTable"
                                             v-model="searchValue"
                                             @input="searchProduct"/>
@@ -37,11 +36,11 @@
                                 <div id="dataTable_filter" class="dataTables_filter" style="text-align: right;">
                                     <label>
                                         <a href="http://admin.localhost:8000/api/products-export" class="btn btn-success btn-sm mr-3">
-                                            Download CSV
+                                            Yuklab olish
                                         </a>
                                         <button data-toggle="modal" data-target="#addProductModal" class="btn btn-primary btn-sm">
                                             <i class="fas fa-plus fa-sm"></i>
-                                            Add new product
+                                            Yangi mahsulot qo'shish
                                         </button>
                                     </label>
                                 </div>
@@ -54,22 +53,22 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Add new product</h4>
+                                        <h4 class="modal-title">Yangi mahsulot qo'shish</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        Name
+                                        Mahsulot nomi
                                         <input type="text" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].name">
-                                        Price
+                                        Narxi
                                         <input type="number" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].price">
-                                        description
+                                        Ta'rifi
                                         <textarea style="resize: none" type="password" autocomplete="off" required class="form-control mb-3" v-model="newProductInfo[0].description">
                                         </textarea>
-                                        Image
+                                        Rasm
                                         <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="previewFile">
                                     </div>
                                     <div class="modal-footer">
-                                        <button @click="addNewProduct" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                        <button @click="addNewProduct" type="button" class="btn btn-primary" data-dismiss="modal">Saqlash</button>
                                     </div>
                                 </div>
                             </div>
@@ -79,22 +78,22 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Update product</h4>
+                                        <h4 class="modal-title">Mahsulotni yangilash</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        Name
+                                        Mahsulot nomi
                                         <input type="text" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].name">
-                                        Price
+                                        Narxi
                                         <input type="number" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].price">
-                                        description
+                                        Ta'rifi
                                         <textarea style="resize: none" type="password" autocomplete="off" required class="form-control mb-3" v-model="updateProductInfo[0].description">
                                         </textarea>
-                                        Image
+                                        Rasm
                                         <input type="file" autocomplete="off" required class="form-control-file mb-3" @change="updateImage">
                                     </div>
                                     <div class="modal-footer">
-                                        <button @click="updateProduct" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                        <button @click="updateProduct" type="button" class="btn btn-primary" data-dismiss="modal">Saqlash</button>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +134,7 @@
                                             aria-label="Name: activate to sort column descending"
                                             style="width: 20px"
                                         >
-                                            Image
+                                            Rasm
                                         </th>
                                         <th
                                             class="sorting"
@@ -146,7 +145,7 @@
                                             aria-label="Position: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Name
+                                            Mahsulot nomi
                                         </th>
                                         <th
                                             class="sorting"
@@ -157,7 +156,7 @@
                                             aria-label="Position: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Price
+                                            Narxi
                                         </th>
                                         <th
                                             class="sorting"
@@ -168,7 +167,7 @@
                                             aria-label="Position: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            description
+                                            Ta'rifi
                                         </th>
                                         <th
                                             class="sorting"
@@ -179,18 +178,18 @@
                                             aria-label="Position: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Action
+                                            Tahrirlash
                                         </th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th rowspan="1" colspan="1">№</th>
-                                        <th rowspan="1" colspan="1">Image</th>
-                                        <th rowspan="1" colspan="1">Name</th>
-                                        <th rowspan="1" colspan="1">Price</th>
-                                        <th rowspan="1" colspan="1">Description</th>
-                                        <th rowspan="1" colspan="1">Action</th>
+                                        <th rowspan="1" colspan="1">Rasm</th>
+                                        <th rowspan="1" colspan="1">Mahsulot nomi</th>
+                                        <th rowspan="1" colspan="1">Narxi</th>
+                                        <th rowspan="1" colspan="1">Ta'rifi</th>
+                                        <th rowspan="1" colspan="1">Tahrirlash</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -320,7 +319,7 @@ export default {
         },
 
         deleteProduct(name) {
-            if(confirm('Are you sure?')) {
+            if(confirm('Chindan ham shu mahsulotni o\'chirmoqchimisiz?')) {
                 axios
                     .delete('/api/products/' + name)
                     .then(response => {

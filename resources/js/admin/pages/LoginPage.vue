@@ -13,24 +13,24 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Hush kelibsiz!</h1>
                                     </div>
                                     <p class="text-center text-danger">{{ this.error }}</p>
                                     <form class="user" @submit.prevent="login">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                    id="exampleInputEmail" aria-describedby="emailHelp"
-                                                   placeholder="Enter Email Address..." name="email" v-model="email">
+                                                   placeholder="Emailni kiriting..." name="email" v-model="email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                   id="exampleInputPassword" placeholder="Password" name="password" v-model="password">
+                                                   id="exampleInputPassword" placeholder="Parolni kiriting..." name="password" v-model="password">
                                         </div>
                                         <input class="btn btn-primary btn-user btn-block" type="submit" value="Login"/>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="#">Forgot Password?</a>
+                                        <a class="small" href="#">Parolni unutdingizmi?</a>
                                     </div>
                                 </div>
                             </div>

@@ -20,4 +20,19 @@ class OrdersExport implements FromCollection
             ->orderBy('orders.created_at', 'desc')
             ->get();
     }
+
+    public function headings(): array
+    {
+        return [
+            'ID',
+            'Customer Name',
+            'User id',
+            'Email',
+            'Product name',
+            'Quantity',
+            'Price',
+            'Total price',
+            'Date',
+        ];
+    }
 }

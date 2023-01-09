@@ -2,12 +2,11 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">All orders</h1>
+        <h1 class="h3 mb-2 text-gray-800">Barcha buyurtmalar</h1>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive o-hidden">
@@ -19,7 +18,7 @@
                                         <input
                                         type="search"
                                         class="form-control form-control-sm"
-                                        placeholder="Search"
+                                        placeholder="Qidiring"
                                         aria-controls="dataTable"
                                         v-model="searchValue"
                                         @input="searchOrder"/>
@@ -37,11 +36,11 @@
                                 <div id="dataTable_filter" class="dataTables_filter" style="text-align: right;">
                                     <label>
                                         <a href="http://admin.localhost:8000/api/orders-export" class="btn btn-success btn-sm mr-3">
-                                            Download CSV
+                                            Yuklab olish
                                         </a>
                                         <button data-toggle="modal" data-target="#addOrderModal" class="btn btn-primary btn-sm">
                                             <i class="fas fa-plus fa-sm"></i>
-                                            Add new order
+                                            Yangi buyurtma qo'shish
                                         </button>
                                     </label>
                                 </div>
@@ -54,7 +53,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Add new order</h4>
+                                        <h4 class="modal-title">Yangi buyurtma qo'shish</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -63,17 +62,17 @@
                                             <option value="">Select user</option>
                                             <option v-for="user in allUsers" :value="user.id">{{user.id + '-' +  user.name }}</option>
                                         </select>
-                                        Product name
+                                        Mahsulot nomi
                                         <select class="form-control mb-3" v-model="newOrderInfo[0].name" @change="getSelectedProductPriceToNewOrder">
-                                            <option value="">Select product</option>
+                                            <option value="">Mahsulotni tanlang</option>
                                             <option v-for="product in allProducts" :value="product.name">{{ product.name }}</option>
                                         </select>
-                                        Quantity
+                                        Soni
                                         <input type="number" min="1" class="form-control mb-3" v-model="newOrderInfo[0].quantity">
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button @click="addNewOrder" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                        <button @click="addNewOrder" type="button" class="btn btn-primary" data-dismiss="modal">Saqlash</button>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +82,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Update order</h4>
+                                        <h4 class="modal-title">Buyurtmani yangilash</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -92,16 +91,16 @@
                                             <option value="">Select user</option>
                                             <option v-for="user in allUsers" :value="user.id">{{user.id + '-' +  user.name }}</option>
                                         </select>
-                                        Product name
+                                        Mahsulot nomi
                                         <select class="form-control mb-3" v-model="updateOrderInfo[0].name" @change="getSelectedProductPriceToUpdateOrder">
                                             <option value="">Select product</option>
                                             <option v-for="product in allProducts" :value="product.name">{{ product.name }}</option>
                                         </select>
-                                        Quantity
+                                        Soni
                                         <input type="number" min="1" class="form-control mb-3" v-model="updateOrderInfo[0].quantity">
                                     </div>
                                     <div class="modal-footer">
-                                        <button @click="updateOrder()" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                        <button @click="updateOrder()" type="button" class="btn btn-primary" data-dismiss="modal">Saqlash</button>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +140,7 @@
                                             aria-label="Position: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Customer name
+                                            Foydalanuvchi ismi
                                         </th>
                                         <th
                                             class="sorting"
@@ -174,7 +173,7 @@
                                             aria-label="Age: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Product name
+                                            Mahsulot nomi
                                         </th>
                                         <th
                                             class="sorting"
@@ -185,7 +184,7 @@
                                             aria-label="Start date: activate to sort column ascending"
                                             style="width: 20px"
                                         >
-                                            Quantity
+                                            Soni
                                         </th>
                                         <th
                                             class="sorting"
@@ -196,7 +195,7 @@
                                             aria-label="Salary: activate to sort column ascending"
                                             style="width: 20px"
                                         >
-                                            Price
+                                            Narxi
                                         </th>
                                         <th
                                             class="sorting"
@@ -207,7 +206,7 @@
                                             aria-label="Salary: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Total price
+                                            Jami narxi
                                         </th>
                                         <th
                                             class="sorting"
@@ -218,7 +217,7 @@
                                             aria-label="Salary: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Date
+                                            Sana
                                         </th>
                                         <th
                                             class="sorting"
@@ -229,22 +228,22 @@
                                             aria-label="Salary: activate to sort column ascending"
                                             style="width: 96px"
                                         >
-                                            Action
+                                            Tahrirlash
                                         </th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th rowspan="1" colspan="1">№</th>
-                                        <th rowspan="1" colspan="1">Customer name</th>
+                                        <th rowspan="1" colspan="1">Foydalanuvchi ismi</th>
                                         <th rowspan="1" colspan="1">User id</th>
                                         <th rowspan="1" colspan="1">Email</th>
-                                        <th rowspan="1" colspan="1">Product name</th>
-                                        <th rowspan="1" colspan="1">Quantity</th>
-                                        <th rowspan="1" colspan="1">Price</th>
-                                        <th rowspan="1" colspan="1">Total price</th>
-                                        <th rowspan="1" colspan="1">Data</th>
-                                        <th rowspan="1" colspan="1">Action</th>
+                                        <th rowspan="1" colspan="1">Mahsulot nomi</th>
+                                        <th rowspan="1" colspan="1">Soni</th>
+                                        <th rowspan="1" colspan="1">Narxi</th>
+                                        <th rowspan="1" colspan="1">Jami narxi</th>
+                                        <th rowspan="1" colspan="1">Sana</th>
+                                        <th rowspan="1" colspan="1">Tahrirlash</th>
 
                                     </tr>
                                     </tfoot>
@@ -440,7 +439,7 @@ export default {
         },
 
         deleteOrder(id) {
-            if(confirm('Are your sure ?')) {
+            if(confirm('Chindan ham shu buyurtmani o\'chirmoqchimisiz?')) {
                 axios
                     .delete('/api/orders/' + id)
                     .then(response => {

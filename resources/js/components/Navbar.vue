@@ -10,7 +10,7 @@
             </div>
             <div class="nav-search">
                 <form method="GET" @submit.prevent="search">
-                    <input type="text" name="query" placeholder="Search" autocomplete="off" v-model="query">
+                    <input type="text" name="query" placeholder="Qidiring" autocomplete="off" v-model="query">
                     <button type="submit">
                         <span>
                             <img src="http://127.0.0.1:8000/assets/navbar/search.svg" alt="search">
@@ -32,7 +32,7 @@
                         <span>
                             <img src="http://127.0.0.1:8000/assets/navbar/cart.svg" alt="cart img">
                         </span>
-                        Cart {{ cartLength }}
+                        Savat {{ cartLength }}
                     </router-link>
                 </div>
             </div>
