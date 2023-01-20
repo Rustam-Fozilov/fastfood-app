@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function productsWithPagination(): \Illuminate\Http\JsonResponse
     {
-        $products = Product::paginate(12);
+        $products = Product::paginate(20);
         return response()->json($products);
     }
 

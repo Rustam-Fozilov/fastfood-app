@@ -363,31 +363,32 @@ export default {
         },
 
         paginate(i) {
-            // axios
-            //     .post(String(this.links[i].url), {
-            //         'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
-            //     })
-            //     .then(response => {
-            //         this.allProducts = response.data.products.data;
-            //         this.links = response.data.products.links;
-            //     })
-            //     .catch(error => {
-            //         console.log(error);
-            //     });
+            axios
+                .get(String(this.links[i].url), {
+                    'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+                })
+                .then(response => {
+                    console.log(response.data)
+                    this.allProducts = response.data.data;
+                    this.links = response.data.links;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
 
         getPagination() {
-            // axios
-            //     .get("http://localhost:8000/api/products-pagination", {
-            //         'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
-            //     })
-            //     .then((response) => {
-            //         this.allProducts = response.data.products.data;
-            //         this.links = response.data.products.links;
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
+            axios
+                .get("http://localhost:8000/api/products-pagination", {
+                    'is_admin' : JSON.parse(localStorage.getItem('admin')).is_admin,
+                })
+                .then((response) => {
+                    this.allProducts = response.data.data;
+                    this.links = response.data.links;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         searchProduct() {
