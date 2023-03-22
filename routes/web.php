@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['domain' => 'admin.localhost'], function () {
-    Route::get('/', function () {
+    Route::any('{any}', function () {
         return view('admin');
-    });
+    })->where('any', '.*');
 });
 
-Route::get('/', function () {
+Route::any('{any}', function () {
     return view('welcome');
-});
+})->where('any', '.*');
