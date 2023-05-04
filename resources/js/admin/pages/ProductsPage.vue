@@ -310,11 +310,12 @@ export default {
                 .post('/api/products/' + this.updateProductInfo[0].id, formData2, config)
                 .then(response => {
                     console.log(response.data.message)
+                    this.errorText = '';
                     this.getAllProducts();
                 })
                 .catch(error => {
                     console.log(error);
-                    this.errorText = error.response.data.message;
+                    this.errorText = 'OOPS Something went wrong!';
                 });
         },
 
@@ -354,11 +355,12 @@ export default {
                 .post('/api/products', formData, config)
                 .then(response => {
                     console.log(response.data.message)
+                    this.errorText = '';
                     this.getAllProducts();
                 })
                 .catch(error => {
                     console.log(error);
-                    this.errorText = error.response.data.message;
+                    this.errorText = 'OOPS Something went wrong!';
                 });
         },
 

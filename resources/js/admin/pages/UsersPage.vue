@@ -349,10 +349,12 @@ export default {
                 })
                 .then(response => {
                     console.log(response.data.message)
+                    this.errorText = ''
                     this.getAllUsers();
                 })
                 .catch(error => {
                     console.log(error);
+                    this.errorText = 'OOPS Something went wrong!';
                 });
         },
 
@@ -365,10 +367,12 @@ export default {
                 })
                 .then(response => {
                     console.log(response.data.message)
+                    this.errorText = '';
                     this.getAllUsers();
                 })
                 .catch(error => {
                     console.log(error);
+                    this.errorText = 'OOPS Something went wrong!';
                 });
         },
     }
