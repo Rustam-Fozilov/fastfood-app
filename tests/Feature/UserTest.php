@@ -29,7 +29,7 @@ class UserTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_show_list_users()
+    public function test_can_show_user()
     {
         $response = $this->get('http://localhost:8000/api/users');
 

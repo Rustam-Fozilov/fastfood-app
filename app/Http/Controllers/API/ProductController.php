@@ -64,7 +64,10 @@ class ProductController extends Controller
         ]);
 
         $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalName();
+        $image_name = $image->hashName();
+
+        Storage::fake('public');
+        Storage::disk('public')->put('assets/products/', $image);
         $request->image->move(public_path('assets/products'), $image_name);
 
         $product = Product::create([
@@ -121,7 +124,10 @@ class ProductController extends Controller
         ]);
 
         $image = $request->file('image');
-        $image_name2 = time() . '.' . $image->getClientOriginalName();
+        $image_name2 = $image->hashName();
+
+        Storage::fake('public');
+        Storage::disk('public')->put('assets/products/', $image);
         $image->move(public_path('assets/products'), $image_name2);
 
         $product = Product::find($id);
