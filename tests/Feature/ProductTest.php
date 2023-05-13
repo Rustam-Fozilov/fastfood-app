@@ -74,6 +74,15 @@ class ProductTest extends TestCase
         Storage::disk('public')->assertExists('/assets/products/' . $file->hashName());
     }
 
+    public function test_can_search_product()
+    {
+        $response = $this->post('http://localhost:8000/api/search', [
+            'query' => 'Test Product 2',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
     public function test_can_delete_product()
     {
         $product = Product::latest()->first();
@@ -82,6 +91,13 @@ class ProductTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_can_download_products()
+    {
+        $response = $this->get('http://localhost:8000/api/products-export');
 
         $response->assertStatus(200);
     }

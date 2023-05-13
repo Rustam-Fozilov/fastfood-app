@@ -158,6 +158,11 @@ class OrderController extends Controller
      */
     public function update($id, Request $request)
     {
+        $request->validate([
+            'products' => 'required|array',
+            'user_id' => 'required|integer',
+        ]);
+
         $order = Order::where('order_id', $id)->first();
         $order->user_id = $request->user_id;
 
